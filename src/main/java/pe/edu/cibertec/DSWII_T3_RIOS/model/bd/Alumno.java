@@ -1,13 +1,14 @@
 package pe.edu.cibertec.DSWII_T3_RIOS.model.bd;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import pe.edu.cibertec.DSWII_T3_RIOS.model.bd.pk.AlumnoCursos;
 
-@NoArgsConstructor
-@AllArgsConstructor
+import java.util.HashSet;
+import java.util.Set;
+
 @Getter
 @Setter
 @Entity
@@ -24,4 +25,11 @@ public class Alumno {
     private Especialidad especialidad;
     @Column(name = "proce")
     private String proce;
+
+
+    @OneToMany(mappedBy = "alumno",
+            cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private Set<Notas> curso = new HashSet<>();
+
 }

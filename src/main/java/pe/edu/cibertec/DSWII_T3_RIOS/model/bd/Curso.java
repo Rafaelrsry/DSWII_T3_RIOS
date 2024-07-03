@@ -1,16 +1,13 @@
 package pe.edu.cibertec.DSWII_T3_RIOS.model.bd;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.*;
+import lombok.*;
 
-@NoArgsConstructor
-@AllArgsConstructor
+import java.util.HashSet;
+import java.util.Set;
+
 @Getter
 @Setter
 @Entity
@@ -22,4 +19,9 @@ public class Curso {
     private String nomcurso;
     @Column(name = "credito")
     private Integer credito;
+
+    @OneToMany(mappedBy = "curso",
+            cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private Set<Notas> notas = new HashSet<>();
 }
