@@ -30,9 +30,16 @@ public class FileController {
         // Validar las extensiones de los archivos
         for (MultipartFile file : multipartFileList) {
             String fileName = file.getOriginalFilename();
+            long fileSize = file.getSize();
             if (fileName == null || !fileName.endsWith(".docx")) {
                 return new ResponseEntity<>(ArchivoDto.builder()
                         .mensaje("Solo se permiten archivos con extensión .docx").build(),
+                        HttpStatus.BAD_REQUEST);
+            }
+
+            if (fileSize > 2 * 1024 * 1024) { // 2 MB en bytes
+                return new ResponseEntity<>(ArchivoDto.builder()
+                        .mensaje("El tamaño del archivo no debe superar los 2 MB").build(),
                         HttpStatus.BAD_REQUEST);
             }
         }
