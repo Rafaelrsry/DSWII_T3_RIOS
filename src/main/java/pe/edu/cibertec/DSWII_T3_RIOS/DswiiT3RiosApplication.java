@@ -21,7 +21,7 @@ public class DswiiT3RiosApplication {
 			public void addCorsMappings(CorsRegistry registry) {
 				registry.addMapping("api/v1/**")
 						.allowedMethods("GET", "POST", "PUT")
-						.allowedOrigins("*");
+						.allowedOrigins("https://www.cibertec.edu.pe");
 			}
 		};
 	}

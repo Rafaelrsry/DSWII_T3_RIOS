@@ -20,16 +20,29 @@ import java.util.List;
 @RequestMapping("api/v1/files")
 public class FileController {
 
-    private FileService fileService;
+    private final FileService fileService;
 
     @PostMapping("")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ArchivoDto> subirArchivos(
             @RequestParam("files") List<MultipartFile> multipartFileList
-    ) throws Exception{
+    ) throws Exception {
+        // Validar las extensiones de los archivos
+        for (MultipartFile file : multipartFileList) {
+            String fileName = file.getOriginalFilename();
+            if (fileName == null || !fileName.endsWith(".docx")) {
+                return new ResponseEntity<>(ArchivoDto.builder()
+                        .mensaje("Solo se permiten archivos con extensión .docx").build(),
+                        HttpStatus.BAD_REQUEST);
+            }
+        }
+
+        // Guardar los archivos si la validación es correcta
         fileService.guardarArchivos(multipartFileList);
         return new ResponseEntity<>(ArchivoDto.builder()
                 .mensaje("Archivos subidos correctamente").build(),
                 HttpStatus.OK);
     }
+
 
 }
